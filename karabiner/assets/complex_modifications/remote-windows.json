@@ -577,7 +577,7 @@
       ]
     },
     {
-      "description": "Remote Windows (lang: Parallels, Openterface): Ctrl→Ctrl, Opt→Alt, Cmd held=Ctrl / tapped=japanese_eisuu/japanese_kana. No Win key.",
+      "description": "Remote Windows (lang: Splashtop, Parallels, Openterface): Ctrl→Ctrl, Opt→Alt, Cmd held=Ctrl / tapped=japanese_eisuu/japanese_kana. No Win key.",
       "manipulators": [
         {
           "type": "basic",
@@ -598,6 +598,7 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
+                "^com\\.splashtop\\.stb\\.macosx$",
                 "^com\\.parallels\\.desktop",
                 "^com\\.parallels\\.vm",
                 "^com\\.parallels\\.winapp\\.",
@@ -625,6 +626,7 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
+                "^com\\.splashtop\\.stb\\.macosx$",
                 "^com\\.parallels\\.desktop",
                 "^com\\.parallels\\.vm",
                 "^com\\.parallels\\.winapp\\.",
@@ -659,6 +661,7 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
+                "^com\\.splashtop\\.stb\\.macosx$",
                 "^com\\.parallels\\.desktop",
                 "^com\\.parallels\\.vm",
                 "^com\\.parallels\\.winapp\\.",
@@ -693,6 +696,7 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
+                "^com\\.splashtop\\.stb\\.macosx$",
                 "^com\\.parallels\\.desktop",
                 "^com\\.parallels\\.vm",
                 "^com\\.parallels\\.winapp\\.",
@@ -720,6 +724,7 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
+                "^com\\.splashtop\\.stb\\.macosx$",
                 "^com\\.parallels\\.desktop",
                 "^com\\.parallels\\.vm",
                 "^com\\.parallels\\.winapp\\.",
@@ -747,173 +752,11 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
+                "^com\\.splashtop\\.stb\\.macosx$",
                 "^com\\.parallels\\.desktop",
                 "^com\\.parallels\\.vm",
                 "^com\\.parallels\\.winapp\\.",
                 "^com\\.openterface\\.macOS$"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "description": "Remote Windows (homeend: Splashtop): Ctrl→Ctrl, Opt→Alt, Cmd held=Ctrl / tapped=home/end. No Win key.",
-      "manipulators": [
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "left_control",
-            "modifiers": {
-              "optional": [
-                "any"
-              ]
-            }
-          },
-          "to": [
-            {
-              "key_code": "left_control"
-            }
-          ],
-          "conditions": [
-            {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^com\\.splashtop\\.stb\\.macosx$"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "right_control",
-            "modifiers": {
-              "optional": [
-                "any"
-              ]
-            }
-          },
-          "to": [
-            {
-              "key_code": "right_control"
-            }
-          ],
-          "conditions": [
-            {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^com\\.splashtop\\.stb\\.macosx$"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "left_command",
-            "modifiers": {
-              "optional": [
-                "any"
-              ]
-            }
-          },
-          "to": [
-            {
-              "lazy": true,
-              "key_code": "left_control",
-              "modifiers": []
-            }
-          ],
-          "to_if_alone": [
-            {
-              "key_code": "home"
-            }
-          ],
-          "conditions": [
-            {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^com\\.splashtop\\.stb\\.macosx$"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "right_command",
-            "modifiers": {
-              "optional": [
-                "any"
-              ]
-            }
-          },
-          "to": [
-            {
-              "lazy": true,
-              "key_code": "right_control",
-              "modifiers": []
-            }
-          ],
-          "to_if_alone": [
-            {
-              "key_code": "end"
-            }
-          ],
-          "conditions": [
-            {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^com\\.splashtop\\.stb\\.macosx$"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "left_option",
-            "modifiers": {
-              "optional": [
-                "any"
-              ]
-            }
-          },
-          "to": [
-            {
-              "key_code": "left_option"
-            }
-          ],
-          "conditions": [
-            {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^com\\.splashtop\\.stb\\.macosx$"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "right_option",
-            "modifiers": {
-              "optional": [
-                "any"
-              ]
-            }
-          },
-          "to": [
-            {
-              "key_code": "right_option"
-            }
-          ],
-          "conditions": [
-            {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^com\\.splashtop\\.stb\\.macosx$"
               ]
             }
           ]

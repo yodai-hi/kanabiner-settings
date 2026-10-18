@@ -4,7 +4,7 @@ Mac（HHKB Studio・US 配列）から JIS 配列の Windows を操作するた�
 
 | 経路 | bundle identifier | IME 切り替え | US→JIS 変換 |
 |---|---|---|---|
-| Splashtop | `com.splashtop.stb.macosx` | homeend | なし |
+| Splashtop | `com.splashtop.stb.macosx` | lang | なし |
 | Parallels | `com.parallels.desktop` / `com.parallels.vm` / `com.parallels.winapp.*` | lang | なし |
 | Openterface KVM | `com.openterface.macOS` | lang | あり |
 
@@ -14,8 +14,12 @@ Mac（HHKB Studio・US 配列）から JIS 配列の Windows を操作するた�
 karabiner/          ~/.config/karabiner の実体（~/.config/karabiner はここへのシンボリックリンク）
   karabiner.json
   assets/complex_modifications/remote-windows.json   生成物
-scripts/build_karabiner.ts   ルール生成スクリプト（karabiner.ts）
-windows/ime-toggle.ahk       Windows 側の AutoHotkey（homeend 方式用）
+scripts/build_karabiner.ts   ルール生成スクリプト（karabiner.ts）の入口
+scripts/karabiner/
+  apps.ts                    リモート用アプリの一覧と IME 方式（普段触るのはここ）
+  us-to-jis.ts               US→JIS 変換の対応表
+  rules.ts                   ルールの組み立て
+windows/ime-toggle.ahk       Windows 側の AutoHotkey（homeend 方式のときだけ必要）
 Brewfile
 mise.toml
 ```
@@ -63,13 +67,17 @@ mise run build
 mise run reload
 ```
 
-Windows 側では、homeend 方式のアプリ（Splashtop）を使う間は `windows/ime-toggle.ahk`（AutoHotkey v2）を常駐させる。
+既定ではすべてのアプリが lang 方式なので、Windows 側に常駐アプリは要らない。
+lang のキー（英数・かな）が Windows に届かない経路では、`apps.ts` でそのアプリを `ime: 'homeend'` にし、Windows 側で `windows/ime-toggle.ahk`（AutoHotkey v2）を常駐させる。
+
+Karabiner の仮想キーボードは無変換・変換（`international5` / `international4`）を送れないため、それを使う方式は用意していない。
 
 ## ルールの再生成
 
-アプリの追加や IME 方式の変更は、`scripts/build_karabiner.ts` の `REMOTE_APPS` を編集する。
+アプリの追加や IME 方式の変更は、`scripts/karabiner/apps.ts` の `REMOTE_APPS` を編集する。
 
 ```sh
+mise run check                                # 型チェック
 mise run build                                # remote-windows.json を生成し、karabiner.json の "Default profile" に反映
 mise exec -- bun scripts/build_karabiner.ts --dry-run    # 反映せず、profile の内容を表示
 mise exec -- bun scripts/build_karabiner.ts --no-apply   # remote-windows.json だけ生成

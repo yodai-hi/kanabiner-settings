@@ -26,7 +26,7 @@ export const REMOTE_APPS: RemoteApp[] = [
   {
     name: 'Splashtop',
     bundleIds: [/^com\.splashtop\.stb\.macosx$/],
-    ime: 'homeend',
+    ime: 'lang',
     usToJis: false,
   },
   {

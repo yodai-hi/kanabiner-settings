@@ -1,14 +1,14 @@
 //go:build windows
 
-// ime-toggle: Home = IME off, End = IME on.
+// Eisu Kana: Mac-style 英数 / かな for Windows. Home = IME off, End = IME on.
 //
 // Karabiner-Elements on the Mac sends Home / End when Command is tapped alone.
 // This resident app swallows those keys (only when no modifier is held) and sets
 // the IME open status of the focused control directly, which also works in
 // Chromium-based apps (new Teams / WebView2) where key-based toggling does not.
 //
-//	ime-toggle.exe              start (and register to run at sign-in)
-//	ime-toggle.exe --uninstall  stop and unregister
+//	eisu-kana.exe              start (and register to run at sign-in)
+//	eisu-kana.exe --uninstall  stop and unregister
 package main
 
 import (
@@ -19,8 +19,8 @@ import (
 )
 
 const (
-	appName   = "IME Toggle"
-	className = "ImeToggleMessageWindow"
+	appName   = "Eisu Kana"
+	className = "EisuKanaMessageWindow"
 	runKey    = `Software\Microsoft\Windows\CurrentVersion\Run`
 
 	whKeyboardLL = 13

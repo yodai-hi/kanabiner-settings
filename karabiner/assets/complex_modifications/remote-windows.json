@@ -769,7 +769,7 @@
       "description_notes": [
         "対象: Splashtop, Parallels, Openterface",
         "Ctrl→Ctrl / Option→Alt / Win キーは送らない",
-        "Cmd 長押し→Ctrl、単押し→左=Home / 右=End（Windows の ime-toggle で IME オフ/オン）"
+        "Cmd 長押し→Ctrl、単押し→左=Home / 右=End（Windows の Eisu Kana で IME オフ/オン）"
       ]
     },
     {

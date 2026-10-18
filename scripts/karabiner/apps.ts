@@ -5,7 +5,7 @@ import type { ToKeyParam } from 'karabiner.ts'
 /**
  * How a tap on Command toggles the Windows IME.
  * - lang:    left = japanese_eisuu (IME off), right = japanese_kana (IME on)
- * - homeend: left = home, right = end (needs windows/ime-toggle on Windows)
+ * - homeend: left = home, right = end (needs Eisu Kana, windows/eisu-kana, on Windows)
  */
 export type ImeMethod = 'lang' | 'homeend'
 

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <clipPath id="card"><rect x="8" y="8" width="240" height="240" rx="52"/></clipPath>
+  </defs>
+  <g clip-path="url(#card)">
+    <rect x="8" y="8" width="120" height="240" fill="#475569"/>
+    <rect x="128" y="8" width="120" height="240" fill="#2563EB"/>
+  </g>
+  <text x="70" y="160" text-anchor="middle" font-family="Hiragino Sans" font-weight="700" font-size="108" fill="#FFFFFF">A</text>
+  <text x="188" y="164" text-anchor="middle" font-family="Hiragino Sans" font-weight="700" font-size="104" fill="#FFFFFF">あ</text>
+</svg>

@@ -1,6 +1,7 @@
 [tools]
 bun = "1.3.14"
 go = "1.26.0"
+"go:github.com/tc-hib/go-winres" = "0.3.3"
 
 [tasks.install]
 description = "Install dependencies"
@@ -18,12 +19,23 @@ run = "launchctl kickstart -k gui/$(id -u)/org.pqrs.service.agent.Karabiner-Cons
 description = "Type-check the generator"
 run = "bunx tsc"
 
-[tasks."build:ime-toggle"]
-description = "Build windows/ime-toggle as dist/ime-toggle.exe (Windows x64)"
-dir = "windows/ime-toggle"
+[tasks."build:eisu-kana"]
+description = "Build windows/eisu-kana as dist/eisu-kana.exe (Windows x64, with icon and version info)"
+dir = "windows/eisu-kana"
 env = { GOOS = "windows", GOARCH = "amd64", CGO_ENABLED = "0" }
 run = [
   'test -z "$(gofmt -l .)" || { gofmt -l .; exit 1; }',
   "go vet ./...",
-  "go build -trimpath -ldflags '-s -w -H windowsgui' -o ../../dist/ime-toggle.exe .",
+  "go-winres make --arch amd64",
+  "go build -trimpath -ldflags '-s -w -H windowsgui' -o ../../dist/eisu-kana.exe .",
+]
+
+[tasks."icons:eisu-kana"]
+description = "Render windows/eisu-kana/winres/*.svg to PNG (needs rsvg-convert)"
+dir = "windows/eisu-kana/winres"
+run = [
+  "rsvg-convert -w 256 -h 256 icon.svg -o icon.png",
+  "rsvg-convert -w 48 -h 48 icon.svg -o icon48.png",
+  "rsvg-convert -w 32 -h 32 icon.svg -o icon32.png",
+  "rsvg-convert -w 16 -h 16 icon16.svg -o icon16.png",
 ]

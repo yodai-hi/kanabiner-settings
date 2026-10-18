@@ -2,3 +2,4 @@ karabiner/automatic_backups/
 node_modules/
 .DS_Store
 dist/
+*.syso

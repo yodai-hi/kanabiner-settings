@@ -31,7 +31,7 @@ mise run reload        # Karabiner を再読み込み
 Karabiner-Elements の設定画面を開いたままリンクを張った場合は、設定画面を開き直す。
 古い内容を表示し続け、そこで編集すると古い設定で karabiner.json が上書きされる。
 
-操作する Windows では `ime-toggle.exe` を一度起動しておく（[Windows 側: ime-toggle](#windows-側-ime-toggle)）。
+操作する Windows では `eisu-kana.exe` を一度起動しておく（[Windows 側: Eisu Kana](#windows-側-eisu-kana)）。
 
 ## ルール
 
@@ -69,15 +69,15 @@ Mac:
 
 | 方式 | Command 単押しで送るキー | Windows 側 |
 |---|---|---|
-| homeend | Home / End | `ime-toggle.exe` が受けて IME をオフ / オン |
+| homeend | Home / End | `eisu-kana.exe` が受けて IME をオフ / オン |
 | lang | 英数 / かな | 不要（ただし今の3経路ではどれも効かない） |
 
 今の3経路はすべて homeend。英数・かなは、Splashtop ではバッククオートになり、Parallels と Openterface では IME が切り替わらなかった。
-Karabiner の仮想キーボードは無変換・変換（`international5` / `international4`）を送れず、Microsoft IME の設定で「IME オフ」「IME オン」を別々に割り当てられるのはその2キーだけなので、Windows 側の受け手（ime-toggle）が必要になる。
+Karabiner の仮想キーボードは無変換・変換（`international5` / `international4`）を送れず、Microsoft IME の設定で「IME オフ」「IME オン」を別々に割り当てられるのはその2キーだけなので、Windows 側の受け手（Eisu Kana）が必要になる。
 
-## Windows 側: ime-toggle
+## Windows 側: Eisu Kana
 
-`windows/ime-toggle/` は、Home / End を受けて IME をオフ / オンにする常駐アプリ（Go、標準ライブラリのみ）。
+`windows/eisu-kana/` は、Mac の英数 / かなと同じ操作を Windows でできるようにする常駐アプリ（Go、標準ライブラリのみ）。Karabiner が送る Home / End を受けて IME をオフ / オンにする。
 
 - Home（修飾キーなし）→ IME オフ、End（修飾キーなし）→ IME オン。Shift+Home などはそのまま通す
 - フォーカス中のコントロールの IME に直接オン / オフを指示するので、新しい Teams など Chromium 系アプリでも効く
@@ -87,18 +87,21 @@ Karabiner の仮想キーボードは無変換・変換（`international5` / `in
 ビルド（Mac 上で Windows 用 exe を作る）:
 
 ```sh
-mise run build:ime-toggle   # → dist/ime-toggle.exe
+mise run build:eisu-kana    # → dist/eisu-kana.exe（アイコン・バージョン情報入り）
 ```
 
 Windows でのインストールとアンインストール:
 
 ```bat
-:: 好きな場所（例: %LOCALAPPDATA%\ime-toggle\）に置いて一度起動する
-ime-toggle.exe
+:: 好きな場所（例: %LOCALAPPDATA%\EisuKana\）に置いて一度起動する
+eisu-kana.exe
 
 :: 停止して自動起動を解除する
-ime-toggle.exe --uninstall
+eisu-kana.exe --uninstall
 ```
+
+アイコンは `winres/icon.svg`（32px 以上）と `winres/icon16.svg`（16px）が元データ。変えたら `mise run icons:eisu-kana`（rsvg-convert が必要: `brew install librsvg`）で PNG を書き出してからビルドする。
+バージョンは `winres/winres.json` の `file_version` / `product_version` / `FileVersion` / `ProductVersion` を合わせて上げる。
 
 署名していない exe なので、初回は SmartScreen の警告が出る。「詳細情報」→「実行」で起動する。
 
@@ -147,11 +150,13 @@ scripts/
     apps.ts                  リモート用アプリの一覧と IME 方式（普段触るのはここ）
     us-to-jis.ts             US→JIS 変換の対応表
     rules.ts                 ルールの組み立て
-windows/ime-toggle/          Windows 側の常駐アプリ（Home=IME オフ / End=IME オン）
+windows/eisu-kana/           Windows 側の常駐アプリ Eisu Kana（Home=IME オフ / End=IME オン）
+  main.go
+  winres/                    アイコン（SVG と書き出した PNG）とバージョン情報（winres.json）
 sample/                      移行前の設定と旧 ime-toggle.ahk（参照用）
-dist/                        ビルドした ime-toggle.exe（git 管理外）
+dist/                        ビルドした eisu-kana.exe（git 管理外）
 Brewfile
-mise.toml                    bun・go のバージョンとタスク（install / check / build / reload / build:ime-toggle）
+mise.toml                    bun・go のバージョンとタスク（install / check / build / reload / build:eisu-kana / icons:eisu-kana）
 ```
 
 ## Karabiner の再読み込み
@@ -166,5 +171,5 @@ mise run reload
 ## トラブルシューティング
 
 - **設定画面に古いルールが表示される**: 設定画面（Karabiner-Elements.app）を終了して開き直す。
-- **リモート先で Command 単押しで IME が切り替わらない**: Windows で `ime-toggle.exe` が動いているかタスクマネージャーで確認する。管理者権限で動いているウィンドウには効かない場合がある。
+- **リモート先で Command 単押しで IME が切り替わらない**: Windows で `eisu-kana.exe` が動いているかタスクマネージャーで確認する。管理者権限で動いているウィンドウには効かない場合がある。
 - **元に戻したい**: セットアップ時の `~/karabiner-backup-*` を `~/.config/karabiner` に戻す。

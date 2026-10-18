@@ -1,5 +1,6 @@
 [tools]
 bun = "1.3.14"
+go = "1.26.0"
 
 [tasks.install]
 description = "Install dependencies"
@@ -16,3 +17,13 @@ run = "launchctl kickstart -k gui/$(id -u)/org.pqrs.service.agent.Karabiner-Cons
 [tasks.check]
 description = "Type-check the generator"
 run = "bunx tsc"
+
+[tasks."build:ime-toggle"]
+description = "Build windows/ime-toggle as dist/ime-toggle.exe (Windows x64)"
+dir = "windows/ime-toggle"
+env = { GOOS = "windows", GOARCH = "amd64", CGO_ENABLED = "0" }
+run = [
+  'test -z "$(gofmt -l .)" || { gofmt -l .; exit 1; }',
+  "go vet ./...",
+  "go build -trimpath -ldflags '-s -w -H windowsgui' -o ../../dist/ime-toggle.exe .",
+]

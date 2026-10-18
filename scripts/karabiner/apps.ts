@@ -33,7 +33,8 @@ export const REMOTE_APPS: RemoteApp[] = [
   {
     name: 'Parallels',
     bundleIds: [/^com\.parallels\.desktop/, /^com\.parallels\.vm/, /^com\.parallels\.winapp\./],
-    ime: 'lang',
+    // japanese_eisuu / japanese_kana do not toggle the IME in Parallels, so use ime-toggle.ahk.
+    ime: 'homeend',
     usToJis: false,
   },
   {

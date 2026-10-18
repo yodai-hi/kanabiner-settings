@@ -602,9 +602,6 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^com\\.parallels\\.desktop",
-                "^com\\.parallels\\.vm",
-                "^com\\.parallels\\.winapp\\.",
                 "^com\\.openterface\\.macOS$"
               ]
             }
@@ -629,9 +626,6 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^com\\.parallels\\.desktop",
-                "^com\\.parallels\\.vm",
-                "^com\\.parallels\\.winapp\\.",
                 "^com\\.openterface\\.macOS$"
               ]
             }
@@ -663,9 +657,6 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^com\\.parallels\\.desktop",
-                "^com\\.parallels\\.vm",
-                "^com\\.parallels\\.winapp\\.",
                 "^com\\.openterface\\.macOS$"
               ]
             }
@@ -697,9 +688,6 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^com\\.parallels\\.desktop",
-                "^com\\.parallels\\.vm",
-                "^com\\.parallels\\.winapp\\.",
                 "^com\\.openterface\\.macOS$"
               ]
             }
@@ -724,9 +712,6 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^com\\.parallels\\.desktop",
-                "^com\\.parallels\\.vm",
-                "^com\\.parallels\\.winapp\\.",
                 "^com\\.openterface\\.macOS$"
               ]
             }
@@ -751,9 +736,6 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^com\\.parallels\\.desktop",
-                "^com\\.parallels\\.vm",
-                "^com\\.parallels\\.winapp\\.",
                 "^com\\.openterface\\.macOS$"
               ]
             }
@@ -761,7 +743,7 @@
         }
       ],
       "description_notes": [
-        "対象: Parallels, Openterface",
+        "対象: Openterface",
         "Ctrl→Ctrl / Option→Alt / Win キーは送らない",
         "Cmd 長押し→Ctrl、単押し→左=英数 / 右=かな"
       ]
@@ -788,7 +770,10 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^com\\.splashtop\\.stb\\.macosx$"
+                "^com\\.splashtop\\.stb\\.macosx$",
+                "^com\\.parallels\\.desktop",
+                "^com\\.parallels\\.vm",
+                "^com\\.parallels\\.winapp\\."
               ]
             }
           ]
@@ -812,7 +797,10 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^com\\.splashtop\\.stb\\.macosx$"
+                "^com\\.splashtop\\.stb\\.macosx$",
+                "^com\\.parallels\\.desktop",
+                "^com\\.parallels\\.vm",
+                "^com\\.parallels\\.winapp\\."
               ]
             }
           ]
@@ -843,7 +831,10 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^com\\.splashtop\\.stb\\.macosx$"
+                "^com\\.splashtop\\.stb\\.macosx$",
+                "^com\\.parallels\\.desktop",
+                "^com\\.parallels\\.vm",
+                "^com\\.parallels\\.winapp\\."
               ]
             }
           ]
@@ -874,7 +865,10 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^com\\.splashtop\\.stb\\.macosx$"
+                "^com\\.splashtop\\.stb\\.macosx$",
+                "^com\\.parallels\\.desktop",
+                "^com\\.parallels\\.vm",
+                "^com\\.parallels\\.winapp\\."
               ]
             }
           ]
@@ -898,7 +892,10 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^com\\.splashtop\\.stb\\.macosx$"
+                "^com\\.splashtop\\.stb\\.macosx$",
+                "^com\\.parallels\\.desktop",
+                "^com\\.parallels\\.vm",
+                "^com\\.parallels\\.winapp\\."
               ]
             }
           ]
@@ -922,14 +919,17 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^com\\.splashtop\\.stb\\.macosx$"
+                "^com\\.splashtop\\.stb\\.macosx$",
+                "^com\\.parallels\\.desktop",
+                "^com\\.parallels\\.vm",
+                "^com\\.parallels\\.winapp\\."
               ]
             }
           ]
         }
       ],
       "description_notes": [
-        "対象: Splashtop",
+        "対象: Splashtop, Parallels",
         "Ctrl→Ctrl / Option→Alt / Win キーは送らない",
         "Cmd 長押し→Ctrl、単押し→左=Home / 右=End（ime-toggle.ahk で IME 切替）"
       ]

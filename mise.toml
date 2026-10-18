@@ -12,3 +12,7 @@ run = "bun scripts/build_karabiner.ts"
 [tasks.reload]
 description = "Restart Karabiner console user server"
 run = "launchctl kickstart -k gui/$(id -u)/org.pqrs.service.agent.Karabiner-Console-User-Server"
+
+[tasks.check]
+description = "Type-check the generator"
+run = "bunx tsc"

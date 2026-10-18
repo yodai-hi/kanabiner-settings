@@ -11,7 +11,7 @@
 // Rule definitions: scripts/karabiner/rules.ts
 
 import { join } from 'node:path'
-import { writeToProfile, type Rule } from 'karabiner.ts'
+import { writeToProfile } from 'karabiner.ts'
 import { capsLockRule, remoteWindowsRules } from './karabiner/rules'
 
 const PROFILE = 'Default profile'
@@ -21,8 +21,8 @@ const KARABINER_JSON = join(ROOT, 'karabiner/karabiner.json')
 
 const remoteRules = remoteWindowsRules()
 const asset = {
-  title: 'Remote Windows (JIS) from US keyboard',
-  rules: remoteRules.map((r): Rule => r.build()),
+  title: 'リモート Windows（JIS）',
+  rules: remoteRules,
 }
 await Bun.write(ASSET, JSON.stringify(asset, null, 2) + '\n')
 console.log(`✓ Wrote ${ASSET}`)

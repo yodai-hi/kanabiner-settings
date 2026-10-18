@@ -9,7 +9,7 @@
       "complex_modifications": {
         "rules": [
           {
-            "description": "Remote Windows: US → JIS (Openterface)",
+            "description": "リモート: US→JIS 記号変換",
             "manipulators": [
               {
                 "type": "basic",
@@ -581,10 +581,14 @@
                   }
                 ]
               }
+            ],
+            "description_notes": [
+              "対象: Openterface",
+              "@ ^ & * ( ) _ = + [ { ] } \\ | : ' \" ` ~ を JIS 配列で入力"
             ]
           },
           {
-            "description": "Remote Windows (lang: Splashtop, Parallels, Openterface): Ctrl→Ctrl, Opt→Alt, Cmd held=Ctrl / tapped=japanese_eisuu/japanese_kana. No Win key.",
+            "description": "リモート: 修飾キー（英数/かな）",
             "manipulators": [
               {
                 "type": "basic",
@@ -768,10 +772,15 @@
                   }
                 ]
               }
+            ],
+            "description_notes": [
+              "対象: Splashtop, Parallels, Openterface",
+              "Ctrl→Ctrl / Option→Alt / Win キーは送らない",
+              "Cmd 長押し→Ctrl、単押し→左=英数 / 右=かな"
             ]
           },
           {
-            "description": "Local Mac: Ctrl→Cmd, Opt→Ctrl, Cmd→Opt (tapped: eisuu/kana)",
+            "description": "Mac: 修飾キー入れ替え",
             "manipulators": [
               {
                 "type": "basic",
@@ -878,10 +887,14 @@
                   }
                 ]
               }
+            ],
+            "description_notes": [
+              "左 Ctrl→Cmd / Option→Ctrl / Cmd→Option",
+              "Cmd 単押し→左=英数 / 右=かな"
             ]
           },
           {
-            "description": "Caps Lock: Shift+Caps Lock shortcuts",
+            "description": "Caps Lock ショートカット",
             "manipulators": [
               {
                 "type": "basic",
@@ -924,6 +937,10 @@
                   }
                 ]
               }
+            ],
+            "description_notes": [
+              "左 Shift+Caps Lock→Page Down",
+              "右 Shift+Caps Lock→Mission Control"
             ]
           }
         ],

@@ -67,6 +67,8 @@ mise run build
 mise run reload
 ```
 
+Karabiner-Elements の設定画面を開いたままリンクを張り替えた場合は、設定画面を開き直す（古い内容を表示し続け、編集すると古い設定で上書きされる）。
+
 既定ではすべてのアプリが lang 方式なので、Windows 側に常駐アプリは要らない。
 lang のキー（英数・かな）が Windows に届かない経路では、`apps.ts` でそのアプリを `ime: 'homeend'` にし、Windows 側で `windows/ime-toggle.ahk`（AutoHotkey v2）を常駐させる。
 

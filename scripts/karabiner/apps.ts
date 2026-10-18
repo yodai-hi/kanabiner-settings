@@ -5,7 +5,7 @@ import type { ToKeyParam } from 'karabiner.ts'
 /**
  * How a tap on Command toggles the Windows IME.
  * - lang:    left = japanese_eisuu (IME off), right = japanese_kana (IME on)
- * - homeend: left = home, right = end (needs windows/ime-toggle.ahk)
+ * - homeend: left = home, right = end (needs windows/ime-toggle on Windows)
  */
 export type ImeMethod = 'lang' | 'homeend'
 
@@ -22,25 +22,25 @@ export interface RemoteApp {
   usToJis: boolean
 }
 
+// None of the remote paths deliver japanese_eisuu / japanese_kana as IME off / on
+// (Splashtop even types a backquote), so all of them use homeend.
 export const REMOTE_APPS: RemoteApp[] = [
   {
     name: 'Splashtop',
     bundleIds: [/^com\.splashtop\.stb\.macosx$/],
-    // Splashtop delivers japanese_eisuu / japanese_kana as a backquote, so use ime-toggle.ahk.
     ime: 'homeend',
     usToJis: false,
   },
   {
     name: 'Parallels',
     bundleIds: [/^com\.parallels\.desktop/, /^com\.parallels\.vm/, /^com\.parallels\.winapp\./],
-    // japanese_eisuu / japanese_kana do not toggle the IME in Parallels, so use ime-toggle.ahk.
     ime: 'homeend',
     usToJis: false,
   },
   {
     name: 'Openterface',
     bundleIds: [/^com\.openterface\.macOS$/],
-    ime: 'lang',
+    ime: 'homeend',
     usToJis: true,
   },
 ]

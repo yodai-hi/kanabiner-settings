@@ -581,174 +581,6 @@
       ]
     },
     {
-      "description": "リモート: 修飾キー（英数/かな）",
-      "manipulators": [
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "left_control",
-            "modifiers": {
-              "optional": [
-                "any"
-              ]
-            }
-          },
-          "to": [
-            {
-              "key_code": "left_control"
-            }
-          ],
-          "conditions": [
-            {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^com\\.openterface\\.macOS$"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "right_control",
-            "modifiers": {
-              "optional": [
-                "any"
-              ]
-            }
-          },
-          "to": [
-            {
-              "key_code": "right_control"
-            }
-          ],
-          "conditions": [
-            {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^com\\.openterface\\.macOS$"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "left_command",
-            "modifiers": {
-              "optional": [
-                "any"
-              ]
-            }
-          },
-          "to": [
-            {
-              "lazy": true,
-              "key_code": "left_control",
-              "modifiers": []
-            }
-          ],
-          "to_if_alone": [
-            {
-              "key_code": "japanese_eisuu"
-            }
-          ],
-          "conditions": [
-            {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^com\\.openterface\\.macOS$"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "right_command",
-            "modifiers": {
-              "optional": [
-                "any"
-              ]
-            }
-          },
-          "to": [
-            {
-              "lazy": true,
-              "key_code": "right_control",
-              "modifiers": []
-            }
-          ],
-          "to_if_alone": [
-            {
-              "key_code": "japanese_kana"
-            }
-          ],
-          "conditions": [
-            {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^com\\.openterface\\.macOS$"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "left_option",
-            "modifiers": {
-              "optional": [
-                "any"
-              ]
-            }
-          },
-          "to": [
-            {
-              "key_code": "left_option"
-            }
-          ],
-          "conditions": [
-            {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^com\\.openterface\\.macOS$"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "right_option",
-            "modifiers": {
-              "optional": [
-                "any"
-              ]
-            }
-          },
-          "to": [
-            {
-              "key_code": "right_option"
-            }
-          ],
-          "conditions": [
-            {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^com\\.openterface\\.macOS$"
-              ]
-            }
-          ]
-        }
-      ],
-      "description_notes": [
-        "対象: Openterface",
-        "Ctrl→Ctrl / Option→Alt / Win キーは送らない",
-        "Cmd 長押し→Ctrl、単押し→左=英数 / 右=かな"
-      ]
-    },
-    {
       "description": "リモート: 修飾キー（Home/End）",
       "manipulators": [
         {
@@ -773,7 +605,8 @@
                 "^com\\.splashtop\\.stb\\.macosx$",
                 "^com\\.parallels\\.desktop",
                 "^com\\.parallels\\.vm",
-                "^com\\.parallels\\.winapp\\."
+                "^com\\.parallels\\.winapp\\.",
+                "^com\\.openterface\\.macOS$"
               ]
             }
           ]
@@ -800,7 +633,8 @@
                 "^com\\.splashtop\\.stb\\.macosx$",
                 "^com\\.parallels\\.desktop",
                 "^com\\.parallels\\.vm",
-                "^com\\.parallels\\.winapp\\."
+                "^com\\.parallels\\.winapp\\.",
+                "^com\\.openterface\\.macOS$"
               ]
             }
           ]
@@ -834,7 +668,8 @@
                 "^com\\.splashtop\\.stb\\.macosx$",
                 "^com\\.parallels\\.desktop",
                 "^com\\.parallels\\.vm",
-                "^com\\.parallels\\.winapp\\."
+                "^com\\.parallels\\.winapp\\.",
+                "^com\\.openterface\\.macOS$"
               ]
             }
           ]
@@ -868,7 +703,8 @@
                 "^com\\.splashtop\\.stb\\.macosx$",
                 "^com\\.parallels\\.desktop",
                 "^com\\.parallels\\.vm",
-                "^com\\.parallels\\.winapp\\."
+                "^com\\.parallels\\.winapp\\.",
+                "^com\\.openterface\\.macOS$"
               ]
             }
           ]
@@ -895,7 +731,8 @@
                 "^com\\.splashtop\\.stb\\.macosx$",
                 "^com\\.parallels\\.desktop",
                 "^com\\.parallels\\.vm",
-                "^com\\.parallels\\.winapp\\."
+                "^com\\.parallels\\.winapp\\.",
+                "^com\\.openterface\\.macOS$"
               ]
             }
           ]
@@ -922,16 +759,17 @@
                 "^com\\.splashtop\\.stb\\.macosx$",
                 "^com\\.parallels\\.desktop",
                 "^com\\.parallels\\.vm",
-                "^com\\.parallels\\.winapp\\."
+                "^com\\.parallels\\.winapp\\.",
+                "^com\\.openterface\\.macOS$"
               ]
             }
           ]
         }
       ],
       "description_notes": [
-        "対象: Splashtop, Parallels",
+        "対象: Splashtop, Parallels, Openterface",
         "Ctrl→Ctrl / Option→Alt / Win キーは送らない",
-        "Cmd 長押し→Ctrl、単押し→左=Home / 右=End（ime-toggle.ahk で IME 切替）"
+        "Cmd 長押し→Ctrl、単押し→左=Home / 右=End（Windows の ime-toggle で IME オフ/オン）"
       ]
     },
     {

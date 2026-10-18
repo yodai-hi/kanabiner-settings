@@ -39,3 +39,27 @@ run = [
   "rsvg-convert -w 32 -h 32 icon.svg -o icon32.png",
   "rsvg-convert -w 16 -h 16 icon16.svg -o icon16.png",
 ]
+
+[tasks."release:eisu-kana"]
+description = "Build eisu-kana.exe and publish it as GitHub release eisu-kana-v<version>"
+depends = ["build:eisu-kana"]
+run = '''
+set -eu
+version=$(bun -e '
+const v = require("./windows/eisu-kana/winres/winres.json").RT_VERSION["#1"]["0000"]
+const all = [v.info["0409"].FileVersion, v.info["0409"].ProductVersion,
+  v.fixed.file_version.replace(/\.0$/, ""), v.fixed.product_version.replace(/\.0$/, "")]
+if (new Set(all).size !== 1) { console.error("version mismatch in winres.json:", all); process.exit(1) }
+console.log(all[0])')
+test -z "$(git status --porcelain)" || { echo "working tree is not clean" >&2; exit 1; }
+git fetch -q origin main
+git merge-base --is-ancestor HEAD origin/main || { echo "HEAD is not pushed to origin/main" >&2; exit 1; }
+gh release create "eisu-kana-v$version" dist/eisu-kana.exe \
+  --target "$(git rev-parse HEAD)" \
+  --title "Eisu Kana $version" \
+  --notes "Install or update on Windows (PowerShell):
+
+    irm https://raw.githubusercontent.com/yodai-hi/kanabiner-settings/main/windows/eisu-kana/install.ps1 | iex
+
+SHA-256: $(shasum -a 256 dist/eisu-kana.exe | cut -d' ' -f1)"
+'''

@@ -31,7 +31,7 @@ mise run reload        # Karabiner を再読み込み
 Karabiner-Elements の設定画面を開いたままリンクを張った場合は、設定画面を開き直す。
 古い内容を表示し続け、そこで編集すると古い設定で karabiner.json が上書きされる。
 
-操作する Windows では `eisu-kana.exe` を一度起動しておく（[Windows 側: Eisu Kana](#windows-側-eisu-kana)）。
+操作する Windows では Eisu Kana を入れておく（[インストール・更新](#インストール更新windows)）。
 
 ## ルール
 
@@ -84,26 +84,36 @@ Karabiner の仮想キーボードは無変換・変換（`international5` / `in
 - 起動すると `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` に登録され、サインイン時に自動で起動する
 - ウィンドウやタスクトレイのアイコンはない（動作中かはタスクマネージャーで確認する）
 
-ビルド（Mac 上で Windows 用 exe を作る）:
+### インストール・更新（Windows）
+
+PowerShell で次を実行する。最新の Release から `%LOCALAPPDATA%\EisuKana\eisu-kana.exe` に入れて起動する。更新も同じコマンドで、動作中の古い版は止めてから置き換える。
+
+```powershell
+irm https://raw.githubusercontent.com/yodai-hi/kanabiner-settings/main/windows/eisu-kana/install.ps1 | iex
+```
+
+アンインストール（停止して自動起動を解除する。exe は `%LOCALAPPDATA%\EisuKana\` ごと削除してよい）:
+
+```powershell
+& "$env:LOCALAPPDATA\EisuKana\eisu-kana.exe" --uninstall
+```
+
+[Releases](https://github.com/yodai-hi/kanabiner-settings/releases) から `eisu-kana.exe` を手でダウンロードして起動してもよい。その場合、署名していない exe なので初回は SmartScreen の警告が出る（「詳細情報」→「実行」）。
+
+### ビルドと公開（Mac）
 
 ```sh
-mise run build:eisu-kana    # → dist/eisu-kana.exe（アイコン・バージョン情報入り）
+mise run build:eisu-kana     # → dist/eisu-kana.exe（アイコン・バージョン情報入り）
+mise run release:eisu-kana   # ビルドして GitHub Release eisu-kana-v<バージョン> を作る
 ```
 
-Windows でのインストールとアンインストール:
+公開の手順:
 
-```bat
-:: 好きな場所（例: %LOCALAPPDATA%\EisuKana\）に置いて一度起動する
-eisu-kana.exe
-
-:: 停止して自動起動を解除する
-eisu-kana.exe --uninstall
-```
+1. `windows/eisu-kana/winres/winres.json` のバージョン（`file_version` / `product_version` / `FileVersion` / `ProductVersion`）を上げる
+2. コミットして push する
+3. `mise run release:eisu-kana`（未コミットの変更がある、push していない、バージョンがそろっていない場合は止まる）
 
 アイコンは `winres/icon.svg`（32px 以上）と `winres/icon16.svg`（16px）が元データ。変えたら `mise run icons:eisu-kana`（rsvg-convert が必要: `brew install librsvg`）で PNG を書き出してからビルドする。
-バージョンは `winres/winres.json` の `file_version` / `product_version` / `FileVersion` / `ProductVersion` を合わせて上げる。
-
-署名していない exe なので、初回は SmartScreen の警告が出る。「詳細情報」→「実行」で起動する。
 
 ## 設定の変更
 
@@ -152,11 +162,12 @@ scripts/
     rules.ts                 ルールの組み立て
 windows/eisu-kana/           Windows 側の常駐アプリ Eisu Kana（Home=IME オフ / End=IME オン）
   main.go
+  install.ps1                Windows 用のインストール・更新スクリプト
   winres/                    アイコン（SVG と書き出した PNG）とバージョン情報（winres.json）
 sample/                      移行前の設定と旧 ime-toggle.ahk（参照用）
 dist/                        ビルドした eisu-kana.exe（git 管理外）
 Brewfile
-mise.toml                    bun・go のバージョンとタスク（install / check / build / reload / build:eisu-kana / icons:eisu-kana）
+mise.toml                    bun・go のバージョンとタスク（install / check / build / reload / build:eisu-kana / icons:eisu-kana / release:eisu-kana）
 ```
 
 ## Karabiner の再読み込み

@@ -53,11 +53,12 @@ Karabiner の設定画面には次の順で表示される。上にあるルー�
 | キー | 押しっぱなし | 単押し（hotkey） | 単押し（lang） |
 |---|---|---|---|
 | Ctrl | Ctrl | | |
-| Option | Alt | | |
+| 左 Option | Alt | | |
+| 右 Option | Win | Win（スタートメニュー） | Win（スタートメニュー） |
 | 左 Command | 左 Ctrl（lazy） | Ctrl+Shift+F11 = IME オフ | 英数（`japanese_eisuu`） |
 | 右 Command | 右 Ctrl（lazy） | Ctrl+Shift+F12 = IME オン | かな（`japanese_kana`） |
 
-Win キーは送らない。
+Win キーは右 Option から送る。Karabiner は Command として送り、Openterface（Mac モード）はそれを Win として届ける。Parallels・Splashtop が Command を Win として届けるかは、それぞれの設定による。
 
 Mac:
 

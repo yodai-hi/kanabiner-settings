@@ -37,11 +37,13 @@ function remoteModifierRule(ime: ImeMethod, apps: RemoteApp[]) {
       map('left_command', '', 'any').to('left_control', [], { lazy: true }).toIfAlone(keys.left),
       map('right_command', '', 'any').to('right_control', [], { lazy: true }).toIfAlone(keys.right),
       map('left_option', '', 'any').to('left_option'),
-      map('right_option', '', 'any').to('right_option'),
+      // Right Option is the only way to send Win: it is sent as Command, which Openterface (Mac mode)
+      // delivers as Win. Parallels / Splashtop may remap Command depending on their settings.
+      map('right_option', '', 'any').to('right_command'),
     ])
   return withNotes(builder, [
     `対象: ${names(apps)}`,
-    'Ctrl→Ctrl / Option→Alt / Win キーは送らない',
+    'Ctrl→Ctrl / 左 Option→Alt / 右 Option→Win',
     `Cmd 長押し→Ctrl、単押し→${label.tap}`,
   ])
 }

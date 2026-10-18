@@ -757,7 +757,7 @@
           },
           "to": [
             {
-              "key_code": "right_option"
+              "key_code": "right_command"
             }
           ],
           "conditions": [
@@ -776,7 +776,7 @@
       ],
       "description_notes": [
         "対象: Splashtop, Parallels, Openterface",
-        "Ctrl→Ctrl / Option→Alt / Win キーは送らない",
+        "Ctrl→Ctrl / 左 Option→Alt / 右 Option→Win",
         "Cmd 長押し→Ctrl、単押し→左=IME オフ / 右=IME オン（Ctrl+Shift+F11 / F12 を Windows の Eisu Kana が受ける）"
       ]
     },

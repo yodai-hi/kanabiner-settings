@@ -5,7 +5,7 @@ Mac（HHKB Studio・US 配列）から JIS 配列の Windows を操作するた�
 
 | 経路 | bundle identifier | IME 切り替え | US→JIS 変換 |
 |---|---|---|---|
-| Splashtop | `com.splashtop.stb.macosx` | lang | なし |
+| Splashtop | `com.splashtop.stb.macosx` | homeend | なし |
 | Parallels | `com.parallels.desktop` / `com.parallels.vm` / `com.parallels.winapp.*` | lang | なし |
 | Openterface KVM | `com.openterface.macOS` | lang | あり |
 
@@ -31,7 +31,7 @@ mise run reload        # Karabiner を再読み込み
 Karabiner-Elements の設定画面を開いたままリンクを張った場合は、設定画面を開き直す。
 古い内容を表示し続け、そこで編集すると古い設定で karabiner.json が上書きされる。
 
-Windows 側の設定は不要（lang 方式の場合）。
+Splashtop を使う Windows では `windows/ime-toggle.ahk`（AutoHotkey v2）を常駐させる（homeend 方式）。Parallels と Openterface（lang 方式）は Windows 側の設定不要。
 
 ## ルール
 
@@ -72,7 +72,7 @@ Mac:
 | lang | 英数 / かな | 不要 |
 | homeend | Home / End | `windows/ime-toggle.ahk`（AutoHotkey v2）を常駐させる |
 
-基本は lang。英数・かなのキーが Windows に届かない経路だけ homeend にする。
+基本は lang。英数・かなのキーが Windows に届かない経路だけ homeend にする（Splashtop は英数・かなをバッククオートとして送ってしまうため homeend）。
 Karabiner の仮想キーボードは無変換・変換（`international5` / `international4`）を送れないため、それを使う方式はない。
 
 ## 設定の変更

@@ -26,7 +26,8 @@ export const REMOTE_APPS: RemoteApp[] = [
   {
     name: 'Splashtop',
     bundleIds: [/^com\.splashtop\.stb\.macosx$/],
-    ime: 'lang',
+    // Splashtop delivers japanese_eisuu / japanese_kana as a backquote, so use ime-toggle.ahk.
+    ime: 'homeend',
     usToJis: false,
   },
   {

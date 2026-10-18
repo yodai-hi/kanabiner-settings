@@ -28,6 +28,9 @@ mise run build         # ルールを生成して karabiner.json に反映
 mise run reload        # Karabiner を再読み込み
 ```
 
+Openterface アプリのキーボードモードは **Mac** にする（ツールバーのモード表示をクリックすると Mac → Windows → Linux と切り替わる）。
+Windows / Linux モードだとアプリ側でも Cmd→Ctrl、Control→Win に置き換えるため、Karabiner の置き換えと重なって Control などが Win キーになる。
+
 Karabiner-Elements の設定画面を開いたままリンクを張った場合は、設定画面を開き直す。
 古い内容を表示し続け、そこで編集すると古い設定で karabiner.json が上書きされる。
 
@@ -183,4 +186,5 @@ mise run reload
 
 - **設定画面に古いルールが表示される**: 設定画面（Karabiner-Elements.app）を終了して開き直す。
 - **リモート先で Command 単押しで IME が切り替わらない**: Windows で `eisu-kana.exe` が動いているかタスクマネージャーで確認する。管理者権限で動いているウィンドウには効かない場合がある。
+- **Openterface で Control や Cmd 長押しが Win キーになる**: Openterface アプリのキーボードモードが Windows / Linux になっている。Mac に切り替える。
 - **元に戻したい**: セットアップ時の `~/karabiner-backup-*` を `~/.config/karabiner` に戻す。

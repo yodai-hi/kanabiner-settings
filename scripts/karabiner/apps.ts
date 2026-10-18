@@ -39,6 +39,8 @@ export const REMOTE_APPS: RemoteApp[] = [
   },
   {
     name: 'Openterface',
+    // Set the Openterface app's keyboard mode to Mac. Its Windows / Linux modes remap
+    // Cmd→Ctrl and Control→Win on top of these rules.
     bundleIds: [/^com\.openterface\.macOS$/],
     ime: 'homeend',
     usToJis: true,

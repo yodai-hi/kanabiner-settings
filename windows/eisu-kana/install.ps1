@@ -29,4 +29,4 @@ Move-Item -Force $download $exe
 Start-Process $exe
 
 Write-Host "Installed Eisu Kana: $exe"
-Write-Host 'Home = IME off / End = IME on. Starts automatically at sign-in.'
+Write-Host 'Ctrl+Shift+F11 = IME off / Ctrl+Shift+F12 = IME on. Starts automatically at sign-in.'

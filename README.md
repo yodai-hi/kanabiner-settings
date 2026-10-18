@@ -5,9 +5,9 @@ Mac（HHKB Studio・US 配列）から JIS 配列の Windows を操作するた�
 
 | 経路 | bundle identifier | IME 切り替え | US→JIS 変換 |
 |---|---|---|---|
-| Splashtop | `com.splashtop.stb.macosx` | homeend | なし |
-| Parallels | `com.parallels.desktop` / `com.parallels.vm` / `com.parallels.winapp.*` | homeend | なし |
-| Openterface KVM | `com.openterface.macOS` | homeend | あり |
+| Splashtop | `com.splashtop.stb.macosx` | hotkey | なし |
+| Parallels | `com.parallels.desktop` / `com.parallels.vm` / `com.parallels.winapp.*` | hotkey | なし |
+| Openterface KVM | `com.openterface.macOS` | hotkey | あり |
 
 ## セットアップ
 
@@ -43,19 +43,19 @@ Karabiner の設定画面には次の順で表示される。上にあるルー�
 | ルール名 | 条件 | 内容 |
 |---|---|---|
 | リモート: US→JIS 記号変換 | `usToJis: true` のアプリが前面 | US 配列の記号入力を JIS 配列の key code に変換 |
-| リモート: 修飾キー（Home/End） | homeend 方式のアプリが前面 | 下表「リモート」 |
+| リモート: 修飾キー（Eisu Kana） | hotkey 方式のアプリが前面 | 下表「リモート」 |
 | リモート: 修飾キー（英数/かな） | lang 方式のアプリが前面（該当アプリがあるときだけ生成） | 下表「リモート」 |
 | Mac: 修飾キー入れ替え | 上記以外 | 下表「Mac」 |
 | Caps Lock ショートカット | 常に | 左 Shift+Caps Lock→Page Down、右 Shift+Caps Lock→Cmd+Mission Control |
 
 リモート:
 
-| キー | 押しっぱなし | 単押し（lang） | 単押し（homeend） |
+| キー | 押しっぱなし | 単押し（hotkey） | 単押し（lang） |
 |---|---|---|---|
 | Ctrl | Ctrl | | |
 | Option | Alt | | |
-| 左 Command | 左 Ctrl（lazy） | 英数（`japanese_eisuu`）= IME オフ | Home |
-| 右 Command | 右 Ctrl（lazy） | かな（`japanese_kana`）= IME オン | End |
+| 左 Command | 左 Ctrl（lazy） | Ctrl+Shift+F11 = IME オフ | 英数（`japanese_eisuu`） |
+| 右 Command | 右 Ctrl（lazy） | Ctrl+Shift+F12 = IME オン | かな（`japanese_kana`） |
 
 Win キーは送らない。
 
@@ -72,17 +72,19 @@ Mac:
 
 | 方式 | Command 単押しで送るキー | Windows 側 |
 |---|---|---|
-| homeend | Home / End | `eisu-kana.exe` が受けて IME をオフ / オン |
+| hotkey | Ctrl+Shift+F11 / Ctrl+Shift+F12 | `eisu-kana.exe` が受けて IME をオフ / オン |
 | lang | 英数 / かな | 不要（ただし今の3経路ではどれも効かない） |
 
-今の3経路はすべて homeend。英数・かなは、Splashtop ではバッククオートになり、Parallels と Openterface では IME が切り替わらなかった。
+今の3経路はすべて hotkey。英数・かなは、Splashtop ではバッククオートになり、Parallels と Openterface では IME が切り替わらなかった。
+合図は普通のキーだけで作る（Openterface は F13 / F14 を Print Screen / App キーに置き換え、F15 以降は送らない）。Alt を含めないのは、Alt を離したときにメニューバーが反応するのを避けるため。
+合図を変えるときは `scripts/karabiner/apps.ts` の `IME_KEYS.hotkey` と `windows/eisu-kana/main.go` の両方を直す。
 Karabiner の仮想キーボードは無変換・変換（`international5` / `international4`）を送れず、Microsoft IME の設定で「IME オフ」「IME オン」を別々に割り当てられるのはその2キーだけなので、Windows 側の受け手（Eisu Kana）が必要になる。
 
 ## Windows 側: Eisu Kana
 
-`windows/eisu-kana/` は、Mac の英数 / かなと同じ操作を Windows でできるようにする常駐アプリ（Go、標準ライブラリのみ）。Karabiner が送る Home / End を受けて IME をオフ / オンにする。
+`windows/eisu-kana/` は、Mac の英数 / かなと同じ操作を Windows でできるようにする常駐アプリ（Go、標準ライブラリのみ）。Karabiner が送る Ctrl+Shift+F11 / F12 を受けて IME をオフ / オンにする。
 
-- Home（修飾キーなし）→ IME オフ、End（修飾キーなし）→ IME オン。Shift+Home などはそのまま通す
+- Ctrl+Shift+F11 → IME オフ、Ctrl+Shift+F12 → IME オン（Alt や Win が押されているときは通す）。Home / End などほかのキーには触れない
 - フォーカス中のコントロールの IME に直接オン / オフを指示するので、新しい Teams など Chromium 系アプリでも効く
 - 起動すると `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` に登録され、サインイン時に自動で起動する
 - ウィンドウやタスクトレイのアイコンはない（動作中かはタスクマネージャーで確認する）
@@ -126,7 +128,7 @@ mise run release:eisu-kana   # ビルドして GitHub Release eisu-kana-v<バー
 {
   name: 'Splashtop',                            // 設定画面の「対象: …」に出る名前
   bundleIds: [/^com\.splashtop\.stb\.macosx$/], // frontmost_application_if の条件
-  ime: 'homeend',                               // 'homeend' | 'lang'
+  ime: 'hotkey',                                // 'hotkey' | 'lang'
   usToJis: false,                               // US→JIS 記号変換を使うか
 },
 ```
@@ -163,7 +165,7 @@ scripts/
     apps.ts                  リモート用アプリの一覧と IME 方式（普段触るのはここ）
     us-to-jis.ts             US→JIS 変換の対応表
     rules.ts                 ルールの組み立て
-windows/eisu-kana/           Windows 側の常駐アプリ Eisu Kana（Home=IME オフ / End=IME オン）
+windows/eisu-kana/           Windows 側の常駐アプリ Eisu Kana（Ctrl+Shift+F11=IME オフ / F12=IME オン）
   main.go
   install.ps1                Windows 用のインストール・更新スクリプト
   winres/                    アイコン（SVG と書き出した PNG）とバージョン情報（winres.json）

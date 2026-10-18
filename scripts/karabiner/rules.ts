@@ -23,8 +23,8 @@ function usToJisRule(apps: RemoteApp[]) {
 }
 
 const IME_LABELS: Record<ImeMethod, { title: string; tap: string }> = {
+  hotkey: { title: 'Eisu Kana', tap: '左=IME オフ / 右=IME オン（Ctrl+Shift+F11 / F12 を Windows の Eisu Kana が受ける）' },
   lang: { title: '英数/かな', tap: '左=英数 / 右=かな' },
-  homeend: { title: 'Home/End', tap: '左=Home / 右=End（Windows の Eisu Kana で IME オフ/オン）' },
 }
 
 function remoteModifierRule(ime: ImeMethod, apps: RemoteApp[]) {

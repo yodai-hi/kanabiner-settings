@@ -1,11 +1,14 @@
 //go:build windows
 
-// Eisu Kana: Mac-style 英数 / かな for Windows. Home = IME off, End = IME on.
+// Eisu Kana: Mac-style 英数 / かな for Windows.
+// Ctrl+Shift+F11 = IME off, Ctrl+Shift+F12 = IME on.
 //
-// Karabiner-Elements on the Mac sends Home / End when Command is tapped alone.
-// This resident app swallows those keys (only when no modifier is held) and sets
-// the IME open status of the focused control directly, which also works in
-// Chromium-based apps (new Teams / WebView2) where key-based toggling does not.
+// Karabiner-Elements on the Mac sends these when Command is tapped alone
+// (scripts/karabiner/apps.ts, IME_KEYS.hotkey). They are made of standard keys only
+// so that every remote path (Splashtop, Parallels, Openterface) delivers them.
+// This resident app swallows them and sets the IME open status of the focused
+// control directly, which also works in Chromium-based apps (new Teams / WebView2)
+// where key-based toggling does not.
 //
 //	eisu-kana.exe              start (and register to run at sign-in)
 //	eisu-kana.exe --uninstall  stop and unregister
@@ -35,8 +38,8 @@ const (
 	wmIMEControl = 0x0283
 	imcSetOpen   = 0x0006
 
-	vkEnd     = 0x23
-	vkHome    = 0x24
+	vkF11     = 0x7A // IME off
+	vkF12     = 0x7B // IME on
 	vkShift   = 0x10
 	vkControl = 0x11
 	vkMenu    = 0x12
@@ -168,13 +171,13 @@ func keyboardHook(nCode int, wParam, lParam uintptr) uintptr {
 	if nCode == 0 {
 		// lParam points to OS-owned memory, not the Go heap; convert without tripping go vet.
 		k := *(**kbdllHookStruct)(unsafe.Pointer(&lParam))
-		if k.VkCode == vkHome || k.VkCode == vkEnd {
+		if k.VkCode == vkF11 || k.VkCode == vkF12 {
 			switch wParam {
 			case wmKeyDown, wmSysKeyDown:
-				if !anyModifierDown() {
+				if isTriggerModifiers() {
 					swallowed[k.VkCode] = true
 					open := uintptr(0)
-					if k.VkCode == vkEnd {
+					if k.VkCode == vkF12 {
 						open = 1
 					}
 					procPostMessageW.Call(window, wmSetIME, open, 0)
@@ -192,13 +195,15 @@ func keyboardHook(nCode int, wParam, lParam uintptr) uintptr {
 	return r
 }
 
-func anyModifierDown() bool {
-	for _, vk := range []uintptr{vkShift, vkControl, vkMenu, vkLWin, vkRWin} {
-		if s, _, _ := procGetAsyncKeyState.Call(vk); s&0x8000 != 0 {
-			return true
-		}
-	}
-	return false
+// isTriggerModifiers reports whether exactly Ctrl and Shift are held.
+func isTriggerModifiers() bool {
+	return keyDown(vkControl) && keyDown(vkShift) &&
+		!keyDown(vkMenu) && !keyDown(vkLWin) && !keyDown(vkRWin)
+}
+
+func keyDown(vk uintptr) bool {
+	s, _, _ := procGetAsyncKeyState.Call(vk)
+	return s&0x8000 != 0
 }
 
 // setIME sends IMC_SETOPENSTATUS to the default IME window of the control that

@@ -581,7 +581,7 @@
       ]
     },
     {
-      "description": "リモート: 修飾キー（Home/End）",
+      "description": "リモート: 修飾キー（Eisu Kana）",
       "manipulators": [
         {
           "type": "basic",
@@ -658,7 +658,11 @@
           ],
           "to_if_alone": [
             {
-              "key_code": "home"
+              "key_code": "f11",
+              "modifiers": [
+                "left_control",
+                "left_shift"
+              ]
             }
           ],
           "conditions": [
@@ -693,7 +697,11 @@
           ],
           "to_if_alone": [
             {
-              "key_code": "end"
+              "key_code": "f12",
+              "modifiers": [
+                "left_control",
+                "left_shift"
+              ]
             }
           ],
           "conditions": [
@@ -769,7 +777,7 @@
       "description_notes": [
         "対象: Splashtop, Parallels, Openterface",
         "Ctrl→Ctrl / Option→Alt / Win キーは送らない",
-        "Cmd 長押し→Ctrl、単押し→左=Home / 右=End（Windows の Eisu Kana で IME オフ/オン）"
+        "Cmd 長押し→Ctrl、単押し→左=IME オフ / 右=IME オン（Ctrl+Shift+F11 / F12 を Windows の Eisu Kana が受ける）"
       ]
     },
     {

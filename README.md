@@ -34,7 +34,7 @@ Windows / Linux モードだとアプリ側でも Cmd→Ctrl、Control→Win に
 Karabiner-Elements の設定画面を開いたままリンクを張った場合は、設定画面を開き直す。
 古い内容を表示し続け、そこで編集すると古い設定で karabiner.json が上書きされる。
 
-操作する Windows では Eisu Kana を入れておく（[インストール・更新](#インストール更新windows)）。
+操作する Windows では Eisu Kana を入れておく（[インストール](#インストールwindows)）。
 
 ## ルール
 
@@ -87,24 +87,27 @@ Karabiner の仮想キーボードは無変換・変換（`international5` / `in
 
 - Ctrl+Shift+F11 → IME オフ、Ctrl+Shift+F12 → IME オン（Alt や Win が押されているときは通す）。Home / End などほかのキーには触れない
 - フォーカス中のコントロールの IME に直接オン / オフを指示するので、新しい Teams など Chromium 系アプリでも効く
-- 起動すると `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` に登録され、サインイン時に自動で起動する
+- 自動起動の登録はしない。exe が自分で `Run` レジストリに登録すると Microsoft Defender に `Behavior:Win32/Persistence.A!ml` として止められたため、自動起動はスタートアップフォルダのショートカットで行う
 - ウィンドウやタスクトレイのアイコンはない（動作中かはタスクマネージャーで確認する）
 
-### インストール・更新（Windows）
+### インストール（Windows）
 
-PowerShell で次を実行する。最新の Release から `%LOCALAPPDATA%\EisuKana\eisu-kana.exe` に入れて起動する。更新も同じコマンドで、動作中の古い版は止めてから置き換える。
+1. [Releases](https://github.com/yodai-hi/kanabiner-settings/releases) から `eisu-kana.exe` をダウンロードし、`%LOCALAPPDATA%\Programs\EisuKana\` に置く
+2. ダブルクリックで起動する。署名していない exe なので、初回は SmartScreen の警告が出る（「詳細情報」→「実行」）
+3. 自動起動させるなら、`Win+R` → `shell:startup` で開くフォルダに `eisu-kana.exe` のショートカットを置く（exe を右クリック →「ショートカットの作成」で作り、そのフォルダへ移す）
 
-```powershell
-irm https://raw.githubusercontent.com/yodai-hi/kanabiner-settings/main/windows/eisu-kana/install.ps1 | iex
-```
+会社が管理している PC では、自作ツールを入れてよいか先に情報システム部門に確認する。
 
-アンインストール（停止して自動起動を解除する。exe は `%LOCALAPPDATA%\EisuKana\` ごと削除してよい）:
+### 更新・アンインストール（Windows）
 
-```powershell
-& "$env:LOCALAPPDATA\EisuKana\eisu-kana.exe" --uninstall
-```
+- 更新: タスクマネージャーで `eisu-kana.exe` を終了し、新しい exe で上書きして起動する
+- アンインストール: タスクマネージャーで `eisu-kana.exe` を終了し、`shell:startup` のショートカットと `%LOCALAPPDATA%\Programs\EisuKana\` を削除する
+- v0.2.0 以前を入れていた場合: 古い版が書いた自動起動の登録と置き場所も消す
 
-[Releases](https://github.com/yodai-hi/kanabiner-settings/releases) から `eisu-kana.exe` を手でダウンロードして起動してもよい。その場合、署名していない exe なので初回は SmartScreen の警告が出る（「詳細情報」→「実行」）。
+  ```powershell
+  Remove-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name 'Eisu Kana' -ErrorAction SilentlyContinue
+  Remove-Item "$env:LOCALAPPDATA\EisuKana" -Recurse -Force -ErrorAction SilentlyContinue
+  ```
 
 ### ビルドと公開（Mac）
 
@@ -168,7 +171,6 @@ scripts/
     rules.ts                 ルールの組み立て
 windows/eisu-kana/           Windows 側の常駐アプリ Eisu Kana（Ctrl+Shift+F11=IME オフ / F12=IME オン）
   main.go
-  install.ps1                Windows 用のインストール・更新スクリプト
   winres/                    アイコン（SVG と書き出した PNG）とバージョン情報（winres.json）
 sample/                      移行前の設定と旧 ime-toggle.ahk（参照用）
 dist/                        ビルドした eisu-kana.exe（git 管理外）

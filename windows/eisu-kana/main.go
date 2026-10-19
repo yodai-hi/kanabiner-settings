@@ -10,29 +10,26 @@
 // control directly, which also works in Chromium-based apps (new Teams / WebView2)
 // where key-based toggling does not.
 //
-//	eisu-kana.exe              start (and register to run at sign-in)
-//	eisu-kana.exe --uninstall  stop and unregister
+// It does not register itself to start at sign-in: an unknown exe writing its own
+// Run key is flagged by Microsoft Defender (Behavior:Win32/Persistence.A!ml).
+// To start it at sign-in, put a shortcut in the Startup folder (shell:startup).
+// To stop it, end eisu-kana.exe in Task Manager.
 package main
 
 import (
-	"os"
 	"runtime"
 	"syscall"
 	"unsafe"
 )
 
 const (
-	appName   = "Eisu Kana"
 	className = "EisuKanaMessageWindow"
-	runKey    = `Software\Microsoft\Windows\CurrentVersion\Run`
 
 	whKeyboardLL = 13
 	wmKeyDown    = 0x0100
 	wmKeyUp      = 0x0101
 	wmSysKeyDown = 0x0104
 	wmSysKeyUp   = 0x0105
-	wmClose      = 0x0010
-	wmDestroy    = 0x0002
 	wmApp        = 0x8000
 	wmSetIME     = wmApp + 1
 	wmIMEControl = 0x0283
@@ -46,9 +43,6 @@ const (
 	vkLWin    = 0x5B
 	vkRWin    = 0x5C
 
-	hkeyCurrentUser   = 0x80000001
-	keySetValue       = 0x0002
-	regSZ             = 1
 	errorAlreadyExist = 183
 	smtoAbortIfHung   = 0x0002
 )
@@ -59,7 +53,6 @@ var (
 	user32   = syscall.NewLazyDLL("user32.dll")
 	kernel32 = syscall.NewLazyDLL("kernel32.dll")
 	imm32    = syscall.NewLazyDLL("imm32.dll")
-	advapi32 = syscall.NewLazyDLL("advapi32.dll")
 
 	procSetWindowsHookExW     = user32.NewProc("SetWindowsHookExW")
 	procCallNextHookEx        = user32.NewProc("CallNextHookEx")
@@ -69,10 +62,7 @@ var (
 	procRegisterClassExW      = user32.NewProc("RegisterClassExW")
 	procCreateWindowExW       = user32.NewProc("CreateWindowExW")
 	procDefWindowProcW        = user32.NewProc("DefWindowProcW")
-	procDestroyWindow         = user32.NewProc("DestroyWindow")
-	procPostQuitMessage       = user32.NewProc("PostQuitMessage")
 	procPostMessageW          = user32.NewProc("PostMessageW")
-	procFindWindowExW         = user32.NewProc("FindWindowExW")
 	procGetForegroundWindow   = user32.NewProc("GetForegroundWindow")
 	procGetWindowThreadProcId = user32.NewProc("GetWindowThreadProcessId")
 	procGetGUIThreadInfo      = user32.NewProc("GetGUIThreadInfo")
@@ -80,10 +70,6 @@ var (
 	procCreateMutexW          = kernel32.NewProc("CreateMutexW")
 	procGetModuleHandleW      = kernel32.NewProc("GetModuleHandleW")
 	procImmGetDefaultIMEWnd   = imm32.NewProc("ImmGetDefaultIMEWnd")
-	procRegCreateKeyExW       = advapi32.NewProc("RegCreateKeyExW")
-	procRegSetValueExW        = advapi32.NewProc("RegSetValueExW")
-	procRegDeleteKeyValueW    = advapi32.NewProc("RegDeleteKeyValueW")
-	procRegCloseKey           = advapi32.NewProc("RegCloseKey")
 )
 
 type kbdllHookStruct struct {
@@ -140,18 +126,11 @@ func main() {
 	// The hook and the message loop must stay on the same OS thread.
 	runtime.LockOSThread()
 
-	if len(os.Args) > 1 && os.Args[1] == "--uninstall" {
-		unregisterStartup()
-		stopRunningInstance()
-		return
-	}
-
 	mutexName, _ := syscall.UTF16PtrFromString(`Local\` + className)
 	if _, _, err := procCreateMutexW.Call(0, 0, uintptr(unsafe.Pointer(mutexName))); err == syscall.Errno(errorAlreadyExist) {
 		return // already running
 	}
 
-	registerStartup() // also refreshes the path if the exe was moved
 	window = createMessageWindow()
 	procSetWindowsHookExW.Call(whKeyboardLL, syscall.NewCallback(keyboardHook), 0, 0)
 
@@ -235,19 +214,13 @@ func windowProc(hwnd uintptr, message uint32, wParam, lParam uintptr) uintptr {
 	case wmSetIME:
 		setIME(wParam)
 		return 0
-	case wmClose:
-		procDestroyWindow.Call(hwnd)
-		return 0
-	case wmDestroy:
-		procPostQuitMessage.Call(0)
-		return 0
 	}
 	r, _, _ := procDefWindowProcW.Call(hwnd, uintptr(message), wParam, lParam)
 	return r
 }
 
-// createMessageWindow creates a hidden message-only window. It receives the IME
-// requests from the hook and lets `--uninstall` find and close this instance.
+// createMessageWindow creates a hidden message-only window that receives the IME
+// requests from the hook.
 func createMessageWindow() uintptr {
 	instance, _, _ := procGetModuleHandleW.Call(0)
 	name, _ := syscall.UTF16PtrFromString(className)
@@ -261,37 +234,4 @@ func createMessageWindow() uintptr {
 	hwnd, _, _ := procCreateWindowExW.Call(0, uintptr(unsafe.Pointer(name)), 0, 0,
 		0, 0, 0, 0, hwndMessage, 0, instance, 0)
 	return hwnd
-}
-
-func stopRunningInstance() {
-	name, _ := syscall.UTF16PtrFromString(className)
-	if hwnd, _, _ := procFindWindowExW.Call(hwndMessage, 0, uintptr(unsafe.Pointer(name)), 0); hwnd != 0 {
-		procPostMessageW.Call(hwnd, wmClose, 0, 0)
-	}
-}
-
-// registerStartup adds this exe to HKCU\...\Run so it starts at sign-in.
-func registerStartup() {
-	exe, err := os.Executable()
-	if err != nil {
-		return
-	}
-	keyName, _ := syscall.UTF16PtrFromString(runKey)
-	var key uintptr
-	if r, _, _ := procRegCreateKeyExW.Call(hkeyCurrentUser, uintptr(unsafe.Pointer(keyName)),
-		0, 0, 0, keySetValue, 0, uintptr(unsafe.Pointer(&key)), 0); r != 0 {
-		return
-	}
-	defer procRegCloseKey.Call(key)
-
-	valueName, _ := syscall.UTF16PtrFromString(appName)
-	data, _ := syscall.UTF16FromString(`"` + exe + `"`)
-	procRegSetValueExW.Call(key, uintptr(unsafe.Pointer(valueName)), 0, regSZ,
-		uintptr(unsafe.Pointer(&data[0])), uintptr(len(data)*2))
-}
-
-func unregisterStartup() {
-	keyName, _ := syscall.UTF16PtrFromString(runKey)
-	valueName, _ := syscall.UTF16PtrFromString(appName)
-	procRegDeleteKeyValueW.Call(hkeyCurrentUser, uintptr(unsafe.Pointer(keyName)), uintptr(unsafe.Pointer(valueName)))
 }

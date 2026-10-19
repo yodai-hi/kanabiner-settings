@@ -14,7 +14,7 @@
       "0409": {
         "identity": {
           "name": "EisuKana",
-          "version": "0.2.0.0"
+          "version": "0.3.0.0"
         },
         "description": "Eisu Kana",
         "minimum-os": "win10",
@@ -38,22 +38,22 @@
     "#1": {
       "0000": {
         "fixed": {
-          "file_version": "0.2.0.0",
-          "product_version": "0.2.0.0"
+          "file_version": "0.3.0.0",
+          "product_version": "0.3.0.0"
         },
         "info": {
           "0409": {
             "Comments": "Ctrl+Shift+F11 = IME off / Ctrl+Shift+F12 = IME on, for Mac 英数/かな over remote desktop and KVM",
             "CompanyName": "",
             "FileDescription": "Eisu Kana",
-            "FileVersion": "0.2.0",
+            "FileVersion": "0.3.0",
             "InternalName": "eisu-kana",
             "LegalCopyright": "Copyright (c) 2026 Yodai Hirano",
             "LegalTrademarks": "",
             "OriginalFilename": "eisu-kana.exe",
             "PrivateBuild": "",
             "ProductName": "Eisu Kana",
-            "ProductVersion": "0.2.0",
+            "ProductVersion": "0.3.0",
             "SpecialBuild": ""
           }
         }

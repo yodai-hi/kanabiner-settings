@@ -27,7 +27,8 @@ run = [
   'test -z "$(gofmt -l .)" || { gofmt -l .; exit 1; }',
   "go vet ./...",
   "go-winres make --arch amd64",
-  "go build -trimpath -ldflags '-s -w -H windowsgui' -o ../../dist/eisu-kana.exe .",
+  # Symbols are kept on purpose: stripped Go binaries are more likely to be flagged by antivirus.
+  "go build -trimpath -ldflags '-H windowsgui' -o ../../dist/eisu-kana.exe .",
 ]
 
 [tasks."icons:eisu-kana"]
@@ -57,9 +58,7 @@ git merge-base --is-ancestor HEAD origin/main || { echo "HEAD is not pushed to o
 gh release create "eisu-kana-v$version" dist/eisu-kana.exe \
   --target "$(git rev-parse HEAD)" \
   --title "Eisu Kana $version" \
-  --notes "Install or update on Windows (PowerShell):
-
-    irm https://raw.githubusercontent.com/yodai-hi/kanabiner-settings/main/windows/eisu-kana/install.ps1 | iex
+  --notes "Place eisu-kana.exe in %LOCALAPPDATA%\\Programs\\EisuKana and start it. See README for details.
 
 SHA-256: $(shasum -a 256 dist/eisu-kana.exe | cut -d' ' -f1)"
 '''
